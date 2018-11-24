@@ -1,0 +1,53 @@
+node_types:
+# general workflow task
+  workflow_service:
+    derived_from: cloudify.nodes.ApplicationModule
+    properties:
+      block_description:
+        description: Description of the block function
+        type: string
+      block_name:
+        type: string
+      block_category:
+        type: string
+      service_type:
+        type: string
+ 
+#general lib description
+  spec_library:
+    derived_from: cloudify.nodes.ApplicationModule
+    properties:
+      lib_name:
+        type: string
+        default: ' '
+      version:
+        type: string
+        default: ''
+      OS-type:
+        type: string
+        default: Linux
+      lib_path:
+        type: string
+        default: ' '
+
+# basic Relationship Type for the tasks link
+  block_link:
+    derived_from: cloudify.relationships.depends_on
+
+# relationships for feature work
+  FileWrapperLink:
+    derived_from: block_link
+    source_interfaces:
+      cloudify.interfaces.relationship_lifecycle:
+          preconfigure:
+              implementation: scripts/datacopy.sh
+
+  DataWrapperLink:
+    derived_from: block_link
+    source_interfaces:
+      cloudify.interfaces.relationship_lifecycle:
+          preconfigure:
+              implementation: scripts/datacopy.sh
+
+  
+          
